@@ -1,13 +1,32 @@
 <template>
   <div id="app">
-    <div class="container" >
-      <categories :category="categories" :length="booksList.length" class="card-categories left" v-model="checkedNames" @input="filterArray">
-      </categories>
-      <div class="card card-books right" v-if="isChecked===false">
+    <div class="container">
+
+      <categories 
+      class="card-categories left" 
+      v-model = "checkedNames" 
+      :booksList = "booksList" 
+      :category = "categories" 
+      :length = "booksList.length" 
+      @input = "filterArray"
+      @inputSearch = "inputSearch"
+      />
+      
+
+      <div v-if="isChecked===false" class="card card-books right" >
         <h1>Выберите категорию</h1>
       </div>
-      <books-list v-else class="card card-books right" style="margin-left: 10px; position: sticky; top: 10px" :next="next" :booksList="booksList" @addMore="addMore" >
-      </books-list> 
+
+      <books-list
+      v-else 
+      class="card card-books right"
+      :inputSearchText = "inputSearchText" 
+      :next = "next" 
+      :booksList = "booksList"
+      :category = "categories" 
+      @addMore = "addMore" 
+      />
+    
     </div>
   </div>
 </template>
@@ -23,6 +42,7 @@ export default {
   },
   data() {
     return {
+      inputSearchText: '',
       checkedNames: [],
       categories: [],
       booksList: [],
@@ -42,11 +62,14 @@ export default {
     }
   },
   methods: {
-    filterArray(array){
+    inputSearch(text) {
+      return this.inputSearchText = text
+    },
+    filterArray(array) {
       this.arrayCategory = array
       this.debouncedFilterArrayCategory();
     },
-    //задержка запроса к серверу
+    //=======================задержка запроса к серверу
     debounce(fn, bufferInterval) {
       var timeout;
       return function () {
@@ -57,7 +80,7 @@ export default {
     async addMore() {
       this.debouncedAddMore();
     },
-    //show more filtered books
+    //===================show more filtered books
     async addMore2() {
       const url2 = `https://webdev.modumlab.com/api/book/list`
       this.page++
@@ -82,7 +105,7 @@ export default {
       });
       
     },
-    //show filtered books 
+    //==================show filtered books 
     async filterArrayCategory(){
       this.page = 1
       this.next = true
@@ -121,8 +144,11 @@ export default {
     })
     .then(response => response.json())
     .then(data => {
+     
       this.categories = data.data.list
+       
       this.checkedNames = this.categories.map((obj)=>obj.id)
+      
     })
     .catch((error) => {
       console.error('Error:', error);
@@ -166,6 +192,9 @@ export default {
     margin-left: 10px;
     width: 75%;
     display: inline-block;
+    margin-left: 10px; 
+    position: sticky; 
+    top: 10px
   }
   .left, .right { vertical-align: top; }
 </style>

@@ -5,12 +5,15 @@
       <label class="label" :for="cat.id">{{cat.name}}</label>
     </div>
     <div>
-      <span style="background: rgb(240, 240, 240); ">Книг в коллекции: <strong><b>{{length}}</b></strong></span>
+      <span v-show="!isSearch" style="background: rgb(240, 240, 240); ">Книг в коллекции: <strong><b>{{length}}</b></strong></span>
     </div><br>
     <div>
       <span>Поиск по сайту: </span>
     <input type="text" v-model="search">
     </div>
+    <!-- <div>
+      <button class="primary">Поделиться ссылкой</button>
+    </div> -->
   </div>
 </template>
 <script>
@@ -21,14 +24,19 @@ export default {
   props: [ 'value', 'category', 'length'],
   data() {
     return {
-    search: ''
+    search: '',
+    isSearch: false
+    }
+  },
+  watch: {
+    search(newValue){
+      if(this.search.length>0){
+        return this.isSearch = true
+      } else this.isSearch = false
+      this.$emit('inputSearch', newValue)
     }
   },
   computed: {
-    rezultSeach() {
-      return this.todos.filter(item => item.title.indexOf(this.search) !== -1)
-    },
- 
     model: {
       get() { return this.value },
       set(newValue) { this.$emit('input', newValue) }
@@ -40,6 +48,9 @@ export default {
   mounted() {
    this.checked = this.compCategory
   },
+  updated() {
+    this.$emit('inputSearch', this.search)
+  }
 }
 </script>
 <style scoped>
