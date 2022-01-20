@@ -1,18 +1,37 @@
 <template>
   <div class="card" @click="$emit('clickCard')">
     <img :src="img" alt="" style="object-fit:contain; height:350px; width:100%"  >
-    <h4  class="title"><b>{{title}}</b></h4> 
+    <h4  class="title"><b><span v-html = "markTitle"></span></b></h4> 
     <span><strong><b>Категория:</b> </strong></span> 
-    <p style="margin-bottom:0px; margin-top:0px">{{category}}</p>
+    <p style="margin-bottom:0px; margin-top:0px"><span v-html = "markCategory"></span></p>
     <span><strong><b>Автор:</b> </strong></span> 
-    <p style="margin-bottom:0px; margin-top:0px"> {{author}}</p>
+    <p style="margin-bottom:0px; margin-top:0px"><span v-html = "markAuthor"></span></p>
     <span><strong><b>Год:</b> </strong></span>
-    <p style="margin-bottom:0px;margin-top:0px">{{year}} год</p>
+    <p style="margin-bottom:0px;margin-top:0px"><span v-html = "markYear"></span> год</p>
   </div> 
+  
 </template>
 <script>
 export default {
-  props: ['img', 'title', 'category', 'author', 'year', 'description']
+  props: ['img', 'title', 'category', 'author', 'year', 'description', 'inputSearchText'],
+  computed: {
+    markTitle() { 
+      var reg = new RegExp(this.inputSearchText, 'gi')
+      return this.title.replaceAll(reg, '<mark>$&</mark>')
+    },
+    markCategory() { 
+      var reg = new RegExp(this.inputSearchText, 'gi')
+      return this.category.replaceAll(reg, '<mark>$&</mark>')
+    },
+    markAuthor() { 
+      var reg = new RegExp(this.inputSearchText, 'gi')
+      return this.author.replaceAll(reg, '<mark>$&</mark>')
+    },
+    markYear() { 
+      var reg = new RegExp(this.inputSearchText, 'gi')
+      return this.year.replaceAll(reg, '<mark>$&</mark>')
+    }
+  }
 }
 
 </script>
