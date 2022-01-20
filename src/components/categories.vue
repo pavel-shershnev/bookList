@@ -8,45 +8,27 @@
       <span style="background: rgb(240, 240, 240); ">Книг в коллекции: <strong><b>{{length}}</b></strong></span>
     </div><br>
     <div>
-      <!-- <span>Поиск по тегам: </span> -->
-      <!-- <autocomplete :list="filteredList" @input="handleInput" /> -->
-      <!-- <button type="submit">Поиск</button> -->
+      <span>Поиск по сайту: </span>
+    <input type="text" v-model="search">
     </div>
   </div>
 </template>
 <script>
-// import autocomplete from './autocomplete.vue'
+
 export default {
-  // components: {autocomplete},
+  
   emits: ['input'],
   props: [ 'value', 'category', 'length'],
   data() {
     return {
-      filterInput: null,
-      list: [
-        "First",
-        "Second",
-        "Third",
-        "Fourth",
-        "Fifth",
-        "Sixth",
-        "Seventh"
-      ]
+    search: ''
     }
   },
   computed: {
-    filteredList() {
-      if (this.filterInput) {
-        return this.list.filter(e => e.toLowerCase().indexOf(this.filterInput.toLowerCase()) !== -1)
-      } else {
-        return this.list
-      }
+    rezultSeach() {
+      return this.todos.filter(item => item.title.indexOf(this.search) !== -1)
     },
-    methods: {
-       handleInput(e) {
-      this.filterInput = e
-    }
-    },
+ 
     model: {
       get() { return this.value },
       set(newValue) { this.$emit('input', newValue) }

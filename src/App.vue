@@ -85,6 +85,7 @@ export default {
     //show filtered books 
     async filterArrayCategory(){
       this.page = 1
+      this.next = true
       if(this.arrayCategory.length > 0) {
         this.filteredArray = this.arrayCategory
         this.isChecked = true
